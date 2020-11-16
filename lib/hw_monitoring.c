@@ -1222,6 +1222,8 @@ hw_mon_read_counter(struct pqos_mon_data *group,
                 if (retval != MACHINE_RETVAL_OK)
                         return PQOS_RETVAL_ERROR;
 
+			    fprintf(stderr, "i=%d, mon_read(lcore=%d, rmid=%d)=%ld, ", i, lcore, rmid, tmp);
+
                 value += tmp;
 
                 if (value >= max_value)
@@ -1242,6 +1244,7 @@ hw_mon_read_counter(struct pqos_mon_data *group,
                         /* Report zero memory bandwidth with first read */
                         pv->mbm_local_delta = 0;
                 pv->mbm_local = value;
+			    fprintf(stderr, "mbm_local_delta_scaled=%ld bytes %ld GBs \n", pv->mbm_local_delta, pv->mbm_local_delta / (1<<30));
                 break;
         case PQOS_MON_EVENT_TMEM_BW:
                 if (group->intl->valid_mbm_read) {

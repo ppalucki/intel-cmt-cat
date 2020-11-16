@@ -176,6 +176,7 @@ msr_file_open(const unsigned lcore)
 #ifdef __FreeBSD__
                 snprintf(fname, sizeof(fname) - 1, "/dev/cpuctl%u", lcore);
 #endif
+				fprintf(stderr, "[%s]", fname);
                 fd = open(fname, O_RDWR);
                 if (fd < 0)
                         LOG_WARN("Error opening file '%s'!\n", fname);
@@ -214,6 +215,7 @@ msr_read(const unsigned lcore, const uint32_t reg, uint64_t *value)
 
 #ifdef __linux__
         read_ret = pread(fd, value, sizeof(value[0]), (off_t)reg);
+		fprintf(stderr, "msr_read(reg=%x)=%lx, ", reg, *value);
 #endif
 
 #ifdef __FreeBSD__
@@ -258,6 +260,7 @@ msr_write(const unsigned lcore, const uint32_t reg, const uint64_t value)
 
 #ifdef __linux__
         write_ret = pwrite(fd, &value, sizeof(value), (off_t)reg);
+		fprintf(stderr, "msr_write(reg=%x, value=%lx),  ", reg, value);
 #endif
 
 #ifdef __FreeBSD__
